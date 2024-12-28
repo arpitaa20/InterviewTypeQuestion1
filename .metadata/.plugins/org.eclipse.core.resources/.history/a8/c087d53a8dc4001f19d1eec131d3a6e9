@@ -1,0 +1,51 @@
+package ap.List;
+import java.io.*;
+import java.util.*;
+
+public class InterviewTypeQuestion1 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter wr = new PrintWriter(System.out);
+        int T = Integer.parseInt(br.readLine().trim());
+        for (int t_i = 0; t_i < T; t_i++) {
+            int N = Integer.parseInt(br.readLine().trim());
+            String s = br.readLine().trim();
+            int K = Integer.parseInt(br.readLine().trim());
+
+            int out_ = solve(N, s, K);
+            System.out.println(out_);
+        }
+        wr.close();
+        br.close();
+    }
+
+    static int solve(int N, String s, int K) {
+        Map<Character, Integer> freq = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
+        }
+
+        int distinctCount = freq.size();
+
+        if (distinctCount == K) {
+            return 0;
+        }
+
+        if (K > N || K < 1) {
+            return -1;
+        }
+
+        if (distinctCount > K) {
+            int excess = distinctCount - K;
+            List<Integer> frequencies = new ArrayList<>(freq.values());
+            Collections.sort(frequencies);
+            int result = 0;
+            for (int i = 0; i < excess; i++) {
+                result += frequencies.get(i);
+            }
+            return result;
+        }
+
+        return K - distinctCount;
+    }
+}
